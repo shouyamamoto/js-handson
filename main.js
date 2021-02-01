@@ -2,6 +2,11 @@
 const ul = document.querySelector('ul');
 const fragment = document.createDocumentFragment();
 
+const loading = document.createElement('img');
+loading.src = 'loading-circle.gif';
+loading.className = 'loading-circle';
+ul.appendChild(loading);
+
 const p = new Promise(function(resolve) {
   setTimeout(function() {
     resolve([{to: "bookmark.html", img: "1.png", alt:"画像1", text: "ブックマーク"}, {to: "message.html", img: "2.png", alt:"画像2", text: "メッセージ"}])
@@ -9,6 +14,7 @@ const p = new Promise(function(resolve) {
 });
 
 p.then(function(items) {
+  loading.remove();
   createElements(items);
 });
 
