@@ -7,15 +7,23 @@ loading.src = 'loading-circle.gif';
 loading.className = 'loading-circle';
 ul.appendChild(loading);
 
-const p = new Promise(function(resolve) {
-  setTimeout(function() {
-    resolve([{to: "bookmark.html", img: "1.png", alt:"画像1", text: "ブックマーク"}, {to: "message.html", img: "2.png", alt:"画像2", text: "メッセージ"}])
-  }, 3000);
+const p = new Promise(function(resolve, reject) {
+  if(false) { // 本当はここにtrueになる条件を書く
+    setTimeout(function() {
+      resolve([{to: "bookmark.html", img: "1.png", alt:"画像1", text: "ブックマーク"}, {to: "message.html", img: "2.png", alt:"画像2", text: "メッセージ"}])
+    }, 3000);
+  } else {
+    setTimeout(function() {
+      reject();
+    },3000) 
+  }
 });
 
 p.then(function(items) {
   loading.remove();
   createElements(items);
+}).catch(function() {
+  console.log('データが取得できませんでした。');
 });
 
 function createElements(items) {
