@@ -1,23 +1,19 @@
 'use strict';
 const ul = document.querySelector('ul');
-
-const texts = ['a1', 'a2'];
-const hrefs = ['a1.html', 'a2.html'];
-const srcs = ['/img/bookmark.png', '/img/bookmark.png'];
+const items = [{to: "bookmark.html", img: "1.png", alt:"画像1", text: "ブックマーク"}, {to: "message.html", img: "2.png", alt:"画像2", text: "メッセージ"}];
 
 const fragment = document.createDocumentFragment();
-
-for(let i = 0; i < texts.length; i++) {
+for(const item of items) {
   const li = document.createElement('li');
   const a = document.createElement('a');
   const img = document.createElement('img');
-  const text = texts[i];
-  a.href = hrefs[i];
-  img.src = srcs[i];
+  const text = item.text;
+  a.href = item.to;
+  img.alt = item.alt;
+  img.src = item.img;
   a.appendChild(img);
   a.insertAdjacentHTML('beforeend', text);
   li.appendChild(a);
   fragment.appendChild(li);
 }
 ul.appendChild(fragment);
-
