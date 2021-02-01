@@ -2,6 +2,15 @@
 
 const ul = document.querySelector('ul');
 const li = document.createElement('li');
-li.textContent = 'これです';
+const img = document.createElement('img');
+const a = document.createElement('a');
+a.href = '1.html';
+img.src = 'bookmark.png';
+img.alt = 'ブックマーク';
+
 
 ul.appendChild(li);
+li.appendChild(a);
+a.appendChild(img);
+a.insertAdjacentHTML('beforeend', 'これです');
+
