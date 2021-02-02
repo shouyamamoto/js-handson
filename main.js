@@ -7,7 +7,7 @@ loading.src = 'loading-circle.gif';
 loading.className = 'loading-circle';
 ul.appendChild(loading);
 
-const p = function() {
+const promiseObj = function() {
   return new Promise(function(resolve, reject) {
   setTimeout(function() {
     resolve([{to: "bookmark.html", img: "1.png", alt:"画像1", text: "ブックマーク"}, {to: "message.html", img: "2.png", alt:"画像2", text: "メッセージ"}])
@@ -15,12 +15,13 @@ const p = function() {
 });
 }
 
-async function a() {
-  const result = await p();
+async function outputFn() {
+  const result = await promiseObj();
   loading.remove();
-  await createElements(result)
-};
-a();
+  createElements(result)
+}
+outputFn();
+
 
 function createElements(items) {
   for(const item of items) {
