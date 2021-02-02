@@ -5,9 +5,15 @@ const fragment = document.createDocumentFragment();
 const loading = document.createElement('img');
 loading.src = 'loading-circle.gif';
 loading.className = 'loading-circle';
-ul.appendChild(loading);
 
-(async function() {
+const btn = document.querySelector('.btn');
+btn.addEventListener('click', function() {
+  ul.appendChild(loading);
+  outputFn();
+  btn.remove();
+});
+
+async function outputFn() {
   try {
     const response = await fetch('https://jsondata.okiba.me/v1/json/9omPz210202144336');
     const json = await response.json();
@@ -18,7 +24,7 @@ ul.appendChild(loading);
   }finally {
     setTimeout(removeLoadingIcon, 3000);
   }
-})();
+}
 
 function removeLoadingIcon() {
   loading.remove();
