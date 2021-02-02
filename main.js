@@ -18,7 +18,13 @@ const p = function() {
 async function a() {
   const result = await p();
   loading.remove();
-  await createElements(result)
+  try {
+    await createElements(result);
+  }catch(e) {
+    console.error(e);
+  }finally {
+    console.log('処理が終わりました。');
+  }
 };
 a();
 
