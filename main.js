@@ -6,11 +6,29 @@ const loading = document.createElement('img');
 loading.src = 'loading-circle.gif';
 loading.className = 'loading-circle';
 
-const btn = document.querySelector('.btn');
-btn.addEventListener('click', function() {
+const reqBtn = document.querySelector('.req-btn');
+const modalBtn = document.querySelector('.modal-btn');
+const mask = document.querySelector('.mask');
+
+mask.addEventListener('click', () => {
+  if(mask.classList.contains('active')) {
+    mask.classList.remove('active');
+    reqBtn.classList.remove('active');
+  }
+});
+
+modalBtn.addEventListener('click', () => {
+  reqBtn.classList.toggle('active');
+  mask.classList.toggle('active');
+});
+
+reqBtn.addEventListener('click', () => {
   ul.appendChild(loading);
   outputFn();
-  btn.remove();
+
+  modalBtn.remove();
+  mask.remove();
+  reqBtn.remove();
 });
 
 async function outputFn() {
