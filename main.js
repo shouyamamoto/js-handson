@@ -7,7 +7,7 @@ loading.src = 'loading-circle.gif';
 loading.className = 'loading-circle';
 ul.appendChild(loading);
 
-const promiseObj = function() {
+const promiseResult = function() {
   return new Promise(function(resolve, reject) {
   setTimeout(function() {
     resolve([{to: "bookmark.html", img: "1.png", alt:"画像1", text: "ブックマーク"}, {to: "message.html", img: "2.png", alt:"画像2", text: "メッセージ"}])
@@ -16,7 +16,7 @@ const promiseObj = function() {
 }
 
 async function outputFn() {
-  const result = await promiseObj();
+  const result = await promiseResult();
   loading.remove();
   createElements(result)
 }
