@@ -3,19 +3,40 @@ body {
   padding: 0;
 }
 
-.modal-btn {
-  margin: 20px;
-}
-
-.req-btn {
+.input-area {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 40%;
+  margin: 0 auto;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  opacity: 0;
+  pointer-events: all;
+  transition: all 0.5s;
+}
+.input-area.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-btn {
+  margin: 20px;
+  cursor: pointer;
+}
+
+.req-btn {
   opacity: 0;
   height: 0;
   pointer-events: none;
   transition: all 0.5s;
+  width: 200px;
+  margin-top: 20px;
+  cursor: pointer;
 }
 
 .req-btn.active {
@@ -23,6 +44,18 @@ body {
   height: auto;
   pointer-events: all;
   z-index: 1;
+}
+
+.input-num {
+  z-index: 1;
+  width: 200px;
+  height: 32px;
+  opacity: 0;
+  pointer-events: none;
+}
+.input-num.active {
+  opacity: 1;
+  pointer-events: all;
 }
 
 .mask {
