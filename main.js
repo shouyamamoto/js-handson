@@ -9,26 +9,22 @@ loading.className = 'loading-circle';
 const btn = document.querySelector('.btn');
 btn.addEventListener('click', function() {
   ul.appendChild(loading);
-  outputFn();
   btn.remove();
 });
 
-async function outputFn() {
+async function fetchData() {
   try {
     const response = await fetch('https://jsondata.okiba.me/v1/json/9omPz210202144336');
     const json = await response.json();
-    const data = await json.data;
-    setTimeout(createElements.bind(null, data) ,3000);
-  }catch(e) {
+    loading.remove();
+    createElements(json.data);
+  } catch(e) {
     console.error(e);
-  }finally {
-    setTimeout(removeLoadingIcon, 3000);
+  } finally {
+    console.log('fetchData run');
   }
 }
-
-function removeLoadingIcon() {
-  loading.remove();
-}
+setTimeout(fetchData, 3000);
 
 function createElements(items) {
   for(const item of items) {
