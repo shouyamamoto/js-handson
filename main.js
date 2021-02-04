@@ -8,7 +8,7 @@ loading.className = 'loading-circle';
 ul.appendChild(loading);
 
 
-async function fetchData() {
+async function outputFunc() {
   try {
     const response = await fetch('https://jsondata.okiba.me/v1/json/9omPz210202144336');
     const json = await response.json();
@@ -17,10 +17,10 @@ async function fetchData() {
   } catch(e) {
     console.error(e);
   } finally {
-    console.log('fetchData run');
+    console.log('outputFunc run');
   }
 }
-setTimeout(fetchData, 3000);
+setTimeout(outputFunc, 3000);
 
 function createElements(items) {
   for(const item of items) {
