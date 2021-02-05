@@ -21,15 +21,17 @@ modalBtn.addEventListener('click', () => {
 });
 
 // リクエストボタンを押したあとの処理
-reqBtn.addEventListener('click', () => {
+reqBtn.addEventListener('click', async () => {
   console.log(inputNum.value);
-  ul.appendChild(loading);
-  setTimeout(fetchData, 3000);
 
+  ul.appendChild(loading);
   modalBtn.remove();
   inputArea.remove();
   mask.remove();
   reqBtn.remove();
+
+  const data = await fetchData();
+  createElements(data);
 });
 
 mask.addEventListener('click', () => {
@@ -41,14 +43,15 @@ mask.addEventListener('click', () => {
 
 async function fetchData() {
   try {
-    const response = await fetch('https://jsondata.okiba.me/v1/json/9omPz210202144336');
-    const json = await response.json();
-    loading.remove();
-    createElements(json.data);
+    const fetchResult = await fetch('https://jsondata.okiba.me/v1/json/9omPz210202144336')
+    .then(response => {
+      return response.json();
+    });
+    return fetchResult.data;
   } catch(e) {
     console.error(e);
   } finally {
-    console.log('fetchData run');
+    loading.remove();
   }
 }
 
