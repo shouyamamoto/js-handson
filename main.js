@@ -2,11 +2,11 @@
 const ul = document.querySelector('ul');
 const fragment = document.createDocumentFragment();
 const loading = document.createElement('img');
-const reqBtn = document.querySelector('.req-btn');
-const modalBtn = document.querySelector('.modal-btn');
-const mask = document.querySelector('.mask');
-const inputNum = document.querySelector('.input-num');
-const inputArea = document.querySelector('.input-area');
+const reqBtn = document.querySelector('#js-req-btn');
+const modalBtn = document.querySelector('#js-modal-btn');
+const mask = document.querySelector('#js-mask');
+const inputNum = document.querySelector('#js-input-num');
+const inputArea = document.querySelector('#js-input-area');
 
 // ローディング画像表示
 loading.src = 'loading-circle.gif';

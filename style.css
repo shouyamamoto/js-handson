@@ -3,7 +3,7 @@ body {
   padding: 0;
 }
 
-.input-area {
+#js-input-area {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -19,17 +19,17 @@ body {
   pointer-events: all;
   transition: all 0.5s;
 }
-.input-area.active {
+#js-input-area.active {
   opacity: 1;
   pointer-events: all;
 }
 
-.modal-btn {
+#js-modal-btn {
   margin: 20px;
   cursor: pointer;
 }
 
-.req-btn {
+#js-req-btn {
   opacity: 0;
   height: 0;
   pointer-events: none;
@@ -39,26 +39,26 @@ body {
   cursor: pointer;
 }
 
-.req-btn.active {
+#js-req-btn.active {
   opacity: 1;
   height: auto;
   pointer-events: all;
   z-index: 1;
 }
 
-.input-num {
+#js-input-num {
   z-index: 1;
   width: 200px;
   height: 32px;
   opacity: 0;
   pointer-events: none;
 }
-.input-num.active {
+#js-input-num.active {
   opacity: 1;
   pointer-events: all;
 }
 
-.mask {
+#js-mask {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -69,7 +69,7 @@ body {
   z-index: -1;
   pointer-events: none;
 }
-.mask.active {
+#js-mask.active {
   z-index: 0;
   opacity: 1;
   pointer-events: all;
