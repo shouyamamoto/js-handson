@@ -8,10 +8,18 @@
 </head>
 <body>
   <ul></ul>
-  <button class="modal-btn">モーダルボタン</button>
+  <button id="js-modal-btn">モーダルボタン</button>
 
-  <div class="mask">
-    <button class="req-btn">リクエストボタン</button>
+  <div id="js-mask"></div>
+
+  <div id="js-input-area">
+    <label for="js-input-num">IDを入力</label>
+    <input type="number" id="js-input-num">
+    
+    <label for="js-input-name">名前を入力</label>
+    <input type="text" id="js-input-name">
+
+    <input type="submit" value="送信" id="js-submit">
   </div>
   
   <script src="main.js"></script>
