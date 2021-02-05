@@ -7,22 +7,17 @@ loading.src = 'loading-circle.gif';
 loading.className = 'loading-circle';
 
 const btn = document.querySelector('.btn');
-btn.addEventListener('click', function() {
+btn.addEventListener('click', async function() {
   ul.appendChild(loading);
   btn.remove();
 
-  fetchData().then(data => {
-    loadingIconRemove();
-    createElements(data);
-  });
+  const data = await fetchData();
+  createElements(data);
 });
 
 async function fetchData() {
   try {
     const fetchResult = await fetch('https://jsondata.okiba.me/v1/json/9omPz210202144336')
-    // このawaitを使った書き方と、thenを使った書き方の違いが分からないです。
-    // const json = await fetchResult.json();
-    // return json.data;
     .then((response) => {
       return response.json();
     })
@@ -30,12 +25,8 @@ async function fetchData() {
   } catch(e) {
     console.error(e);
   } finally {
-    console.log('fetchData run');
+    loading.remove();
   }
-}
-
-function loadingIconRemove() {
-  loading.remove();
 }
 
 function createElements(items) {
