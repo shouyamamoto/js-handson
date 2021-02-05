@@ -11,17 +11,19 @@
   <button id="js-modal-btn">モーダルボタン</button>
 
   <div id="js-mask"></div>
-
-  <div id="js-input-area">
-    <label for="js-input-num">IDを入力</label>
-    <input type="number" id="js-input-num">
-    
-    <label for="js-input-name">名前を入力</label>
-    <input type="text" id="js-input-name">
-
-    <input type="submit" value="送信" id="js-submit">
-  </div>
-  
+      <form action="#" method="POST" id="js-form">
+        <p>ログイン</p>
+        <div class="form-id">
+          <label for="js-input-num">IDを入力</label>
+          <input type="number" id="js-input-num">
+        </div>
+        
+        <div class="form-name">
+          <label for="js-input-name">名前を入力</label>
+          <input type="text" id="js-input-name">
+        </div>
+        <input type="submit" value="送信" id="js-submit">
+      </form>
   <script src="main.js"></script>
 </body>
 </html>
