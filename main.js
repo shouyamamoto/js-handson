@@ -5,11 +5,11 @@ const month = dayDate.getMonth() + 1
 const day = dayDate.getDate()
 const today =  new Date(`${year}/${month}/${day}`);
 
-
 const body = document.querySelector('body')
 const tabs = document.querySelector('ul')
 tabs.classList.add('tab')
 
+// 各コンテンツの枠
 const contentsWrap = document.createElement('div')
 const newsContents = document.createElement('div')
 const economyContents = document.createElement('div')
@@ -17,12 +17,14 @@ const entertainmentContents = document.createElement('div')
 const sportsContents = document.createElement('div')
 const japanContents = document.createElement('div')
 
+// 各コンテンツの枠の中
 const newsContentsInner = document.createElement('div')
 const economyContentsInner = document.createElement('div')
 const entertainmentContentsInner = document.createElement('div')
 const sportsContentsInner = document.createElement('div')
 const japanContentsInner = document.createElement('div')
 
+// 各タイトルのラップ
 const newsTitleWrap = document.createElement('ul')
 const economyTitleWrap = document.createElement('ul')
 const entertainmentTitleWrap = document.createElement('ul')
@@ -34,11 +36,11 @@ const contentsInners = [newsContentsInner, economyContentsInner, entertainmentCo
 const titleWraps = [newsTitleWrap, economyTitleWrap, entertainmentTitleWrap, sportsTitleWrap, japanTitleWrap]
 
 contentsWrap.classList.add('contentWrap')
-newsContents.id = "news"
-economyContents.id = "economy"
-entertainmentContents.id = "entertainment"
-sportsContents.id = "sports"
-japanContents.id = "japan"
+newsContents.id = "js-news"
+economyContents.id = "js-economy"
+entertainmentContents.id = "js-entertainment"
+sportsContents.id = "js-sports"
+japanContents.id = "js-japan"
 
 for(let i = 0; i < contents.length; i++) {
   contentsWrap.appendChild(contents[i])
@@ -81,15 +83,15 @@ async function createElement () {
     }
 
     if(article.category === 'ニュース') {
-      tab.dataset.id = 'news'
+      tab.dataset.id = 'js-news'
     } else if(article.category === '経済') {
-      tab.dataset.id = 'economy'
+      tab.dataset.id = 'js-economy'
     } else if(article.category === 'エンタメ') {
-      tab.dataset.id = 'entertainment'
+      tab.dataset.id = 'js-entertainment'
     } else if(article.category === 'スポーツ') {
-      tab.dataset.id = 'sports'
+      tab.dataset.id = 'js-sports'
     } else if(article.category === '国内') {
-      tab.dataset.id = 'japan'
+      tab.dataset.id = 'js-japan'
     }
 
     // firstViewがtrueのコンテンツを初期表示にする(ニュースカテゴリーがtrueを保持している)
