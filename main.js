@@ -1,4 +1,10 @@
-const today = new Date('2021/2/9')
+// 現在日時を取得
+const dayDate = new Date()
+const year = dayDate.getFullYear()
+const month = dayDate.getMonth() + 1
+const day = dayDate.getDate()
+const today =  new Date(`${year}/${month}/${day}`);
+
 
 const body = document.querySelector('body')
 const tabs = document.querySelector('ul')
@@ -42,19 +48,16 @@ for(let i = 0; i < contents.length; i++) {
   body.appendChild(contentsWrap)
 }
 
-
-
-
 async function fetchArticleData () {
   try {
-    const articleData = await fetch('https://jsondata.okiba.me/v1/json/WCTTJ210208232654')
+    const articleData = await fetch('https://jsondata.okiba.me/v1/json/2Fc7O210214092520')
     .then(response => {
       const json =  response.json()
       return json
     })
     return articleData.articleList
-  } catch(e) {
-    alert('ぶっこわれてます')
+  } catch {
+    console.log('ただいまサーバー側がぶっこわれています。');
   } finally {
     console.log('fetchData run')
   }
@@ -89,15 +92,16 @@ async function createElement () {
       tab.dataset.id = 'japan'
     }
 
+    // firstViewがtrueのコンテンツを初期表示にする(ニュースカテゴリーがtrueを保持している)
     if(article.category === 'ニュース' && article.firstView === 'true') {
       newsContents.classList.add('active')
-    } else if(article.category === '経済') {
+    } else if(article.category === '経済' && article.firstView === 'true') {
       economyContents.classList.add('active')
-    } else if(article.category === 'エンタメ') {
+    } else if(article.category === 'エンタメ' && article.firstView === 'true') {
       entertainmentContents.classList.add('active')
-    } else if(article.category === 'スポーツ') {
+    } else if(article.category === 'スポーツ' && article.firstView === 'true') {
       sportsContents.classList.add('active')
-    } else if(article.category === '国内') {
+    } else if(article.category === '国内' && article.firstView === 'true') {
       japanContents.classList.add('active')
     }
     // タブの生成ここまで
@@ -117,7 +121,7 @@ async function createElement () {
       title_link.appendChild(comment)
       title.appendChild(title_link)
 
-      // 投稿日と2021/2/9との日差を取得
+      // 投稿日と今日との日差を取得
       const postDay = new Date(info.postDay)
       const ms = today.getTime() - postDay.getTime()
       const days = Math.floor(ms / (1000*60*60*24))
