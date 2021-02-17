@@ -8,6 +8,7 @@ const today =  new Date(`${year}/${month}/${day}`);
 const body = document.querySelector('body')
 const tabs = document.querySelector('ul')
 tabs.classList.add('tab')
+const tab_list = new Set()
 
 // 各コンテンツの枠
 const contentsWrap = document.createElement('div')
@@ -58,17 +59,21 @@ async function fetchArticle () {
   } catch {
     tabs.textContent = 'ただいまサーバー側がぶっこわれています。'
   } finally {
-    console.log('fetchData run')
+    console.log('fetchArticle run')
   }
 }
 
 async function createElement () {
   const articles = await fetchArticle()
-  console.log(articles);
-  const tab_list = new Set()
+  createTabs(articles);
+  createTitles(articles);
+  createImages(articles);
+  tabClickAction(tab_list)
+}
+createElement()
 
+function createTabs(articles) {
   for(const article of articles) {
-    // タブの生成
     const tab = document.createElement('li')
     tab.textContent = article.category
     tab.classList.add('tab__item')
@@ -104,9 +109,11 @@ async function createElement () {
     } else if(article.category === '国内' && article.is_init === true) {
       japanContents.classList.add('active')
     }
-    // タブの生成ここまで
+  }
+}
 
-    // タイトルの生成
+function createTitles(articles) {
+  for(const article of articles) {
     for(const info of article.article) {
       const titleFrag = document.createDocumentFragment()
       const title = document.createElement('li')
@@ -175,12 +182,15 @@ async function createElement () {
         japanContents.appendChild(japanContentsInner)
       } 
     }
+  }
+}
 
-    // 画像の生成
+function createImages(articles) {
+  for(const article of articles) {
     const img = document.createElement('img')
     img.src = article.img_path
     img.classList.add('img')
-
+    
     if(article.category === 'ニュース') {
       newsContentsInner.appendChild(img)
       newsContents.appendChild(newsContentsInner)
@@ -198,8 +208,6 @@ async function createElement () {
       japanContents.appendChild(japanContentsInner)
     }
   }
-
-  tabClickAction(tab_list)
 }
 
 function tabClickAction (tabList) {
@@ -219,5 +227,3 @@ function tabClickAction (tabList) {
     })
   })
 }
-
-createElement()
