@@ -74,10 +74,12 @@ createElement()
 
 function createTabs(articles) {
   for(const article of articles) {
+    const tabFrag = document.createDocumentFragment()
     const tab = document.createElement('li')
     tab.textContent = article.category
     tab.classList.add('tab__item')
-    tabs.appendChild(tab)
+    tabFrag.appendChild(tab)
+    tabs.appendChild(tabFrag)
     tab_list.add(tab)
 
     // どのタブを初期表示にするか
