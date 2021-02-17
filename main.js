@@ -50,26 +50,24 @@ for(let i = 0; i < contents.length; i++) {
   body.appendChild(contentsWrap)
 }
 
-async function fetchArticleData () {
+async function fetchArticle () {
   try {
-    const articleData = await fetch('https://jsondata.okiba.me/v1/json/2Fc7O210214092520')
-    .then(response => {
-      const json =  response.json()
-      return json
-    })
-    return articleData.articleList
+    const response = await fetch('data.json')
+    const json = await response.json()
+    return json.articles
   } catch {
-    console.log('ただいまサーバー側がぶっこわれています。');
+    tabs.textContent = 'ただいまサーバー側がぶっこわれています。'
   } finally {
     console.log('fetchData run')
   }
 }
 
 async function createElement () {
-  const articleList = await fetchArticleData()
+  const articles = await fetchArticle()
+  console.log(articles);
   const tab_list = new Set()
 
-  for(const article of articleList) {
+  for(const article of articles) {
     // タブの生成
     const tab = document.createElement('li')
     tab.textContent = article.category
@@ -78,7 +76,7 @@ async function createElement () {
     tab_list.add(tab)
 
     // どのタブを初期表示にするか
-    if(article.firstView === 'true') {
+    if(article.is_init) {
       tab.classList.add('active')
     }
 
@@ -94,22 +92,23 @@ async function createElement () {
       tab.dataset.id = 'js-japan'
     }
 
-    // firstViewがtrueのコンテンツを初期表示にする(ニュースカテゴリーがtrueを保持している)
-    if(article.category === 'ニュース' && article.firstView === 'true') {
+    // is_initがtrueのコンテンツを初期表示にする(ニュースカテゴリーがtrueを保持している)
+    if(article.category === 'ニュース' && article.is_init === true) {
       newsContents.classList.add('active')
-    } else if(article.category === '経済' && article.firstView === 'true') {
+    } else if(article.category === '経済' && article.is_init === true) {
       economyContents.classList.add('active')
-    } else if(article.category === 'エンタメ' && article.firstView === 'true') {
+    } else if(article.category === 'エンタメ' && article.is_init === true) {
       entertainmentContents.classList.add('active')
-    } else if(article.category === 'スポーツ' && article.firstView === 'true') {
+    } else if(article.category === 'スポーツ' && article.is_init === true) {
       sportsContents.classList.add('active')
-    } else if(article.category === '国内' && article.firstView === 'true') {
+    } else if(article.category === '国内' && article.is_init === true) {
       japanContents.classList.add('active')
     }
     // タブの生成ここまで
 
     // タイトルの生成
-    for(const info of article.articleInfo) {
+    for(const info of article.article) {
+      const titleFrag = document.createDocumentFragment()
       const title = document.createElement('li')
       const title_link = document.createElement('a')
       const comment = document.createElement('span')
@@ -122,9 +121,10 @@ async function createElement () {
 
       title_link.appendChild(comment)
       title.appendChild(title_link)
+      titleFrag.appendChild(title)
 
       // 投稿日と今日との日差を取得
-      const postDay = new Date(info.postDay)
+      const postDay = new Date(info.created_at)
       const ms = today.getTime() - postDay.getTime()
       const days = Math.floor(ms / (1000*60*60*24))
 
@@ -154,32 +154,31 @@ async function createElement () {
       }
 
       if(article.category === 'ニュース') {
-        newsTitleWrap.appendChild(title)
+        newsTitleWrap.appendChild(titleFrag)
         newsContentsInner.appendChild(newsTitleWrap)
         newsContents.appendChild(newsContentsInner)
       } else if(article.category === '経済') {
-        economyTitleWrap.appendChild(title)
+        economyTitleWrap.appendChild(titleFrag)
         economyContentsInner.appendChild(economyTitleWrap)
         economyContents.appendChild(economyContentsInner)
       } else if(article.category === 'エンタメ') {
-        entertainmentTitleWrap.appendChild(title)
+        entertainmentTitleWrap.appendChild(titleFrag)
         entertainmentContentsInner.appendChild(entertainmentTitleWrap)
         entertainmentContents.appendChild(entertainmentContentsInner)
       } else if(article.category === 'スポーツ') {
-        sportsTitleWrap.appendChild(title)
+        sportsTitleWrap.appendChild(titleFrag)
         sportsContentsInner.appendChild(sportsTitleWrap)
         sportsContents.appendChild(sportsContentsInner)
       } else if(article.category === '国内') {
-        japanTitleWrap.appendChild(title)
+        japanTitleWrap.appendChild(titleFrag)
         japanContentsInner.appendChild(japanTitleWrap)
         japanContents.appendChild(japanContentsInner)
       } 
     }
-    // タイトルの生成ここまで
 
     // 画像の生成
     const img = document.createElement('img')
-    img.src = article.img
+    img.src = article.img_path
     img.classList.add('img')
 
     if(article.category === 'ニュース') {
@@ -198,7 +197,6 @@ async function createElement () {
       japanContentsInner.appendChild(img)
       japanContents.appendChild(japanContentsInner)
     }
-    // 画像の生成ここまで
   }
 
   tabClickAction(tab_list)
