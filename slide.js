@@ -1,5 +1,5 @@
 const slideImageContainer = document.getElementById('slideImage__container')
-const frag = document.createDocumentFragment()
+const slideImageFrag = document.createDocumentFragment()
 const nextArrow = document.getElementById('js-arrow__next')
 const prevArrow = document.getElementById('js-arrow__prev')
 const pagination = document.getElementById('js-pagination')
@@ -15,9 +15,15 @@ function checkInitCurrent() {
 
 // fetchでjsonデータを取得してくる用の関数
 async function myFetch(url) {
-  const response = await fetch(url)
-  const json = await response.json()
-  return json
+  try {
+    const response = await fetch(url)
+    const json = await response.json()
+    return json
+  } catch {
+    console.error('データを取得できませんでした。')
+  } finally {
+    console.log('myFetch run')
+  }
 }
 
 // fetchでデータを取得してきてからimgを生成する
@@ -32,13 +38,12 @@ function fetchSlideCreate() {
       const imgElement = document.createElement('img')
       imgElement.src = img.src
       imgElement.classList.add('slideImage')
-      frag.appendChild(imgElement)
+      slideImageFrag.appendChild(imgElement)
     })
-    return frag
+    return slideImageFrag
   })
-  .then( frag => {
-    // imgを生成してからslideImageContainerに追加
-    slideImageContainer.appendChild(frag)
+  .then( slideImageFrag => {
+    slideImageContainer.appendChild(slideImageFrag)
     // slideImagesに追加して戻り値として返す
     slideImages.push(slideImageContainer.children)
     return slideImages
@@ -78,7 +83,6 @@ async function showSlide() {
       prevArrow.classList.add('disabled')
     }
   })
-  // クリックイベントここまで
 }
 showSlide()
 
@@ -88,6 +92,7 @@ function pageNum(target) {
   pagination.textContent = `${currentNum + 1} / ${target.length}`
 }
 
+// 画像切り替え
 function changeImage(num, target) {
   if(currentNum + num >= 0 && currentNum + num < target[0].length) {
     currentNum += num;
