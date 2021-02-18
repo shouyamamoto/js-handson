@@ -52,7 +52,7 @@ async function createImg() {
 
 async function showSlide() {
   const slideImageList = await createImg()
-  // HTMLコレクションの中をpageNumの引数に
+  
   pageNum(slideImageList)
 
   // 初めのスライドの要素にactiveクラスをつける
