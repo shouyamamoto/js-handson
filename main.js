@@ -65,9 +65,10 @@ async function fetchArticle () {
 
 async function createElement () {
   const articles = await fetchArticle()
-  createTabs(articles);
-  createTitles(articles);
-  createImages(articles);
+  createTabs(articles)
+  createTitles(articles)
+  createImages(articles)
+
   tabClickAction(tab_list)
 }
 createElement()
@@ -132,29 +133,7 @@ function createTitles(articles) {
       title.appendChild(title_link)
       titleFrag.appendChild(title)
 
-      // 投稿日と今日との日差を取得
-      const postDay = new Date(info.created_at)
-      const ms = today.getTime() - postDay.getTime()
-      const days = Math.floor(ms / (1000*60*60*24))
-
-      // 14日以内の投稿であればnew_iconを追加する
-      if(days <= 14) {
-        const new_icon = document.createElement('img')
-        new_icon.src = 'img/new_icon.png'
-        new_icon.classList.add('new_icon')
-
-        if(article.category === 'ニュース') {
-          title.appendChild(new_icon)
-        } else if(article.category === '経済') {
-          title.appendChild(new_icon)
-        } else if(article.category === 'エンタメ') {
-          title.appendChild(new_icon)
-        } else if(article.category === 'スポーツ') {
-          title.appendChild(new_icon)
-        } else if(article.category === '国内') {
-          title.appendChild(new_icon)
-        } 
-      }
+      
 
       // コメントがあればアイコンを追加
       if(info.comment > 0) {
