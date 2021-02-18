@@ -36,63 +36,61 @@ function fetchImages() {
 }
 
 async function createImg() {
-  const data = await fetchImages()
-  const images = data.images
-  const imgFrag = document.createDocumentFragment()
-  images.forEach(image => {
-    const imgElement = document.createElement('img')
-    imgElement.src = image.img_path
-    imgElement.classList.add('slideImage')
-    slideImages.push(imgElement)
-    imgFrag.appendChild(imgElement)
-  })
-  slideImageContainer.appendChild(imgFrag)
+  try {
+    const data = await fetchImages()
+    const images = data.images
+    const imgFrag = document.createDocumentFragment()
+    images.forEach(image => {
+      const imgElement = document.createElement('img')
+      imgElement.src = image.img_path
+      imgElement.classList.add('slideImage')
+      slideImages.push(imgElement)
+      imgFrag.appendChild(imgElement)
+    })
+    slideImageContainer.appendChild(imgFrag)
+  } catch(e) {
+    console.error(e);
+  }
   return slideImages
 }
 
 async function showSlide() {
-  const slideImageList = await createImg()
+  try {
+    const slideImageList = await createImg()
 
-  pageNum(slideImageList)
+    pageNum(slideImageList)
 
-  // 初めのスライドの要素にactiveクラスをつける
-  slideImageList[0].classList.add('active')
+    // 初めのスライドの要素にactiveクラスをつける
+    slideImageList[0].classList.add('active')
 
-  // currentNumの値を確認してdisabledクラスをつける
-  checkInitCurrent()
-  
-  // arrowにactiveクラスをつける 
-  nextArrow.classList.add('active')
-  prevArrow.classList.add('active')
-
-  // クリックイベント
-  nextArrow.addEventListener('click', () => {
-    changeImage(1, slideImageList);
-    prevArrow.classList.remove('disabled')
+    // currentNumの値を確認してdisabledクラスをつける
+    checkInitCurrent()
     
-    // 最後の要素かを判定する
-    function isLast(currentNum) { 
-      return currentNum === slideImageList.length - 1
-    }
+    // arrowにactiveクラスをつける 
+    nextArrow.classList.add('active')
+    prevArrow.classList.add('active')
 
-    if(isLast(currentNum)) {
-      nextArrow.classList.add('disabled')
-    }
-  })
-  
-  prevArrow.addEventListener('click', () => {
-    changeImage(-1, slideImageList);
-    nextArrow.classList.remove('disabled')
+    // クリックイベント
+    nextArrow.addEventListener('click', () => {
+      changeImage(1, slideImageList);
+      prevArrow.classList.remove('disabled')
+      
+      if(isLast(currentNum, slideImageList)) {
+        nextArrow.classList.add('disabled')
+      }
+    })
     
-    // 最初の要素かを判定する
-    function isFirst(currentNum) { 
-      return currentNum === 0
-    }
+    prevArrow.addEventListener('click', () => {
+      changeImage(-1, slideImageList);
+      nextArrow.classList.remove('disabled')
 
-    if(isFirst(currentNum)) {
-      prevArrow.classList.add('disabled')
-    }
-  })
+      if(isFirst(currentNum)) {
+        prevArrow.classList.add('disabled')
+      }
+    })
+  } catch(e) {
+    console.error(e);
+  }  
 }
 showSlide()
 
@@ -113,5 +111,13 @@ function changeImage(num, target) {
   }
 }
 
+// 最初の要素かを判定する
+function isFirst(currentNum) { 
+  return currentNum === 0
+}
 
+// 最後の要素かを判定する
+function isLast(currentNum, slideImageList) { 
+  return currentNum === slideImageList.length - 1
+}
 
