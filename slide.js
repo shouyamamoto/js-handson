@@ -26,7 +26,7 @@ async function myFetch(url) {
   }
 }
 
-// fetchでデータを取得してきてからimgを生成する
+
 function fetchImages() {
   return new Promise((reject) => {
     setTimeout(function() {
