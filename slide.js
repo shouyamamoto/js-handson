@@ -27,36 +27,36 @@ async function myFetch(url) {
 }
 
 // fetchでデータを取得してきてからimgを生成する
-function fetchSlideCreate() {
+function fetchImages() {
   return new Promise((reject) => {
     setTimeout(function() {
       reject(myFetch('slide.json'))
     }, 3000)
   })
-  .then(data => {
-    data.forEach( img => {
-      const imgElement = document.createElement('img')
-      imgElement.src = img.src
-      imgElement.classList.add('slideImage')
-      slideImageFrag.appendChild(imgElement)
-    })
-    return slideImageFrag
+}
+
+async function createImg() {
+  const data = await fetchImages()
+  const images = data.images
+  const imgFrag = document.createDocumentFragment()
+  images.forEach(image => {
+    const imgElement = document.createElement('img')
+    imgElement.src = image.img_path
+    imgElement.classList.add('slideImage')
+    slideImages.push(imgElement)
+    imgFrag.appendChild(imgElement)
   })
-  .then( slideImageFrag => {
-    slideImageContainer.appendChild(slideImageFrag)
-    // slideImagesに追加して戻り値として返す
-    slideImages.push(slideImageContainer.children)
-    return slideImages
-  })
+  slideImageContainer.appendChild(imgFrag)
+  return slideImages
 }
 
 async function showSlide() {
-  const slideImageList = await fetchSlideCreate() // 返ってくるのはHTMLコレクション
+  const slideImageList = await createImg()
   // HTMLコレクションの中をpageNumの引数に
-  pageNum(slideImageList[0])
+  pageNum(slideImageList)
 
   // 初めのスライドの要素にactiveクラスをつける
-  slideImageList[0][0].classList.add('active')
+  slideImageList[0].classList.add('active')
 
   // currentNumの値を確認してdisabledクラスをつける
   checkInitCurrent()
@@ -69,8 +69,8 @@ async function showSlide() {
   nextArrow.addEventListener('click', () => {
     changeImage(1, slideImageList);
     prevArrow.classList.remove('disabled')
-  
-    if(currentNum === slideImageList[0].length - 1) {
+    
+    if(isLast(currentNum)) {
       nextArrow.classList.add('disabled')
     }
   })
@@ -78,8 +78,8 @@ async function showSlide() {
   prevArrow.addEventListener('click', () => {
     changeImage(-1, slideImageList);
     nextArrow.classList.remove('disabled')
-  
-    if(currentNum === 0) {
+    
+    if(isFirst(currentNum)) {
       prevArrow.classList.add('disabled')
     }
   })
@@ -94,18 +94,21 @@ function pageNum(target) {
 
 // 画像切り替え
 function changeImage(num, target) {
-  if(currentNum + num >= 0 && currentNum + num < target[0].length) {
-    currentNum += num;
+  if(currentNum + num >= 0 && currentNum + num < target.length) {
+    target[currentNum].classList.remove('active')
+    currentNum += num
+    target[currentNum].classList.add('active')
 
-    //　スプレット演算子を使って、HTMLコレクションを配列に直してforEachを使う
-    [...target[0]].forEach(image => {
-      image.classList.remove('active');
-    })
-    target[0][currentNum].classList.add('active');
-
-    pageNum(target[0]);
+    pageNum(target);
   }
 }
 
+// 最初の要素かを判定する
+function isFirst(currentNum) { 
+  return currentNum === 0;
+}
 
-
+// 最後の要素かを判定する
+function isLast(currentNum) { 
+  return currentNum === slideImageList.length - 1;
+}

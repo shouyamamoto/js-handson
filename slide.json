@@ -1,17 +1,19 @@
-[
-  {
-    "src": "./img/news-image.png"
-  },
-  {
-    "src": "./img/economy-image.png"
-  },
-  {
-    "src": "./img/entertainment-image.png"
-  },
-  {
-    "src": "./img/sports-image.png"
-  },
-  {
-    "src": "./img/japan-image.png"
-  }
-]
+{
+  "images" : [
+    {
+      "img_path": "./img/news-image.png"
+    },
+    {
+      "img_path": "./img/economy-image.png"
+    },
+    {
+      "img_path": "./img/entertainment-image.png"
+    },
+    {
+      "img_path": "./img/sports-image.png"
+    },
+    {
+      "img_path": "./img/japan-image.png"
+    }
+  ]
+} 
