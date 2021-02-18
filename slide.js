@@ -52,7 +52,7 @@ async function createImg() {
 
 async function showSlide() {
   const slideImageList = await createImg()
-  
+
   pageNum(slideImageList)
 
   // 初めのスライドの要素にactiveクラスをつける
@@ -70,6 +70,11 @@ async function showSlide() {
     changeImage(1, slideImageList);
     prevArrow.classList.remove('disabled')
     
+    // 最後の要素かを判定する
+    function isLast(currentNum) { 
+      return currentNum === slideImageList.length - 1
+    }
+
     if(isLast(currentNum)) {
       nextArrow.classList.add('disabled')
     }
@@ -79,6 +84,11 @@ async function showSlide() {
     changeImage(-1, slideImageList);
     nextArrow.classList.remove('disabled')
     
+    // 最初の要素かを判定する
+    function isFirst(currentNum) { 
+      return currentNum === 0
+    }
+
     if(isFirst(currentNum)) {
       prevArrow.classList.add('disabled')
     }
@@ -103,12 +113,5 @@ function changeImage(num, target) {
   }
 }
 
-// 最初の要素かを判定する
-function isFirst(currentNum) { 
-  return currentNum === 0;
-}
 
-// 最後の要素かを判定する
-function isLast(currentNum) { 
-  return currentNum === slideImageList.length - 1;
-}
+
