@@ -7,7 +7,6 @@ const today =  new Date(`${year}/${month}/${day}`);
 
 const body = document.querySelector('body')
 const tabs = document.querySelector('ul')
-tabs.classList.add('tab')
 const tab_list = new Set()
 
 // 各コンテンツの枠
