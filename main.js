@@ -1,3 +1,6 @@
+// fetchするJSON
+const fetchURL = 'https://jsondata.okiba.me/v1/json/0ypVR210221060352'
+
 // 現在日時を取得
 const dayDate = new Date()
 const year = dayDate.getFullYear()
@@ -7,7 +10,7 @@ const today =  new Date(`${year}/${month}/${day}`);
 
 const body = document.querySelector('body')
 const tabs = document.querySelector('ul')
-const tab_list = new Set()
+
 
 // 各コンテンツの枠
 const contentsWrap = document.createElement('div')
@@ -52,7 +55,7 @@ for(let i = 0; i < contents.length; i++) {
 
 async function fetchArticle () {
   try {
-    const response = await fetch('data.json')
+    const response = await fetch(fetchURL)
     const json = await response.json()
     return json.articles
   } catch {
@@ -62,134 +65,58 @@ async function fetchArticle () {
   }
 }
 
-async function createElement () {
+async function createElements () {
   try {
     const articles = await fetchArticle()
     createTabs(articles)
     createTitles(articles)
     createImages(articles)
-
-    tabClickAction(tab_list)
+    checkContentsIsActive(articles)
   } catch(e) {
     console.log(e);
+  } finally {
+    console.log('createElements run');
   }
 }
-createElement()
+createElements()
 
 function createTabs(articles) {
+  const tabFrag = document.createDocumentFragment()
+  const tabList = new Set()
+
   for(const article of articles) {
-    const tabFrag = document.createDocumentFragment()
-    const tab = document.createElement('li')
-    tab.textContent = article.category
-    tab.classList.add('tab__item')
-    tabFrag.appendChild(tab)
+    const { category, isInit } = article
+    const tabItem = document.createElement('li')
+    tabItem.textContent = category
+    tabItem.classList.add('tab__item')
+    tabFrag.appendChild(tabItem)
     tabs.appendChild(tabFrag)
-    tab_list.add(tab)
+    tabList.add(tabItem)
 
-    // どのタブを初期表示にするか
-    if(article.is_init) {
-      tab.classList.add('active')
+    if(checkTabIsActive(isInit)) {
+      addActiveClassName(tabItem)
     }
 
-    if(article.category === 'ニュース') {
-      tab.dataset.id = 'js-news'
-    } else if(article.category === '経済') {
-      tab.dataset.id = 'js-economy'
-    } else if(article.category === 'エンタメ') {
-      tab.dataset.id = 'js-entertainment'
-    } else if(article.category === 'スポーツ') {
-      tab.dataset.id = 'js-sports'
-    } else if(article.category === '国内') {
-      tab.dataset.id = 'js-japan'
-    }
-
-    // is_initがtrueのコンテンツを初期表示にする(ニュースカテゴリーがtrueを保持している)
-    if(article.category === 'ニュース' && article.is_init === true) {
-      newsContents.classList.add('active')
-    } else if(article.category === '経済' && article.is_init === true) {
-      economyContents.classList.add('active')
-    } else if(article.category === 'エンタメ' && article.is_init === true) {
-      entertainmentContents.classList.add('active')
-    } else if(article.category === 'スポーツ' && article.is_init === true) {
-      sportsContents.classList.add('active')
-    } else if(article.category === '国内' && article.is_init === true) {
-      japanContents.classList.add('active')
-    }
+    addTabId(category, tabItem)
+    tabClickAction(tabList)
   }
 }
 
-function createTitles(articles) {
-  for(const article of articles) {
-    for(const info of article.article) {
-      const titleFrag = document.createDocumentFragment()
-      const title = document.createElement('li')
-      const title_link = document.createElement('a')
-      const comment = document.createElement('span')
-      const comment_icon = document.createElement('img')
-      title.classList.add('title')
-      comment.classList.add('comment')
-      title_link.innerHTML = info.title
-      comment_icon.src = 'img/comment.png'
-      comment_icon.classList.add('comment_icon')
-
-      title_link.appendChild(comment)
-      title.appendChild(title_link)
-      titleFrag.appendChild(title)
-
-      // 14日以内の投稿であればnew_iconを追加する
-      addNewIcon(info, article, title)
-
-      // コメントがあればコメントアイコンを追加
-      checkComment(info, comment, comment_icon)
-      
-
-      if(article.category === 'ニュース') {
-        newsTitleWrap.appendChild(titleFrag)
-        newsContentsInner.appendChild(newsTitleWrap)
-        newsContents.appendChild(newsContentsInner)
-      } else if(article.category === '経済') {
-        economyTitleWrap.appendChild(titleFrag)
-        economyContentsInner.appendChild(economyTitleWrap)
-        economyContents.appendChild(economyContentsInner)
-      } else if(article.category === 'エンタメ') {
-        entertainmentTitleWrap.appendChild(titleFrag)
-        entertainmentContentsInner.appendChild(entertainmentTitleWrap)
-        entertainmentContents.appendChild(entertainmentContentsInner)
-      } else if(article.category === 'スポーツ') {
-        sportsTitleWrap.appendChild(titleFrag)
-        sportsContentsInner.appendChild(sportsTitleWrap)
-        sportsContents.appendChild(sportsContentsInner)
-      } else if(article.category === '国内') {
-        japanTitleWrap.appendChild(titleFrag)
-        japanContentsInner.appendChild(japanTitleWrap)
-        japanContents.appendChild(japanContentsInner)
-      } 
-    }
-  }
+function checkTabIsActive(isInit) {
+  if(isInit) return true
 }
 
-function createImages(articles) {
-  for(const article of articles) {
-    const img = document.createElement('img')
-    img.src = article.img_path
-    img.classList.add('img')
-    
-    if(article.category === 'ニュース') {
-      newsContentsInner.appendChild(img)
-      newsContents.appendChild(newsContentsInner)
-    } else if(article.category === '経済') {
-      economyContentsInner.appendChild(img)
-      economyContents.appendChild(economyContentsInner)
-    } else if(article.category === 'エンタメ') {
-      entertainmentContentsInner.appendChild(img)
-      entertainmentContents.appendChild(entertainmentContentsInner)
-    } else if(article.category === 'スポーツ') {
-      sportsContentsInner.appendChild(img)
-      sportsContents.appendChild(sportsContentsInner)
-    } else if(article.category === '国内') {
-      japanContentsInner.appendChild(img)
-      japanContents.appendChild(japanContentsInner)
-    }
+function addTabId(category, tabItem) {
+  if(category === 'ニュース') {
+    tabItem.dataset.id = 'js-news'
+  } else if(category === '経済') {
+    tabItem.dataset.id = 'js-economy'
+  } else if(category === 'エンタメ') {
+    tabItem.dataset.id = 'js-entertainment'
+  } else if(category === 'スポーツ') {
+    tabItem.dataset.id = 'js-sports'
+  } else if(category === '国内') {
+    tabItem.dataset.id = 'js-japan'
   }
 }
 
@@ -211,35 +138,153 @@ function tabClickAction (tabList) {
   })
 }
 
-function checkComment(info, comment, comment_icon) {
-  if(info.comment > 0) {
-    comment.textContent = info.comment
-    comment.appendChild(comment_icon)
+function checkContentsIsActive(articles) {
+  for(const article of articles) {
+    const { category, isInit } = article
+
+    if(category === 'ニュース' && isInit) {
+      addActiveClassName(newsContents)
+    } else if(category === '経済' && isInit) {
+      addActiveClassName(economyContents)
+    } else if(category === 'エンタメ' && isInit) {
+      addActiveClassName(entertainmentContents)
+    } else if(category === 'スポーツ' && isInit) {
+      addActiveClassName(sportsContents)
+    } else if(category === '国内' && isInit) {
+      addActiveClassName(japanContents)
+    }
   }
 }
 
-function addNewIcon(info, article, title) {
-  // 投稿日と今日との日差を取得
-  const postDay = new Date(info.created_at)
-  const ms = today.getTime() - postDay.getTime()
-  const days = Math.floor(ms / (1000*60*60*24))
+function createTitles(articles) {
+  const titleFrag = document.createDocumentFragment()
+  
+  for(const article of articles) {
+    const { category } = article
+    
+    for(const info of article.article) {
+      const { title, comment, createdAt } = info
+      const titleElement = document.createElement('li')
+      const titleLink = document.createElement('a')
+      titleElement.classList.add('title')
+      titleLink.textContent = title
 
-  // 14日以内なら該当するタイトルの最後にnewアイコンをつける
-  if(days <= 14) {
-    const new_icon = document.createElement('img')
-    new_icon.src = 'img/new_icon.png'
-    new_icon.classList.add('new_icon')
+      const commentElement = document.createElement('span')
+      const commentIcon = document.createElement('img')
+      commentElement.classList.add('comment')
+      commentIcon.classList.add('comment_icon')
+      commentIcon.src = 'img/comment.png'
 
-    if(article.category === 'ニュース') {
-      title.appendChild(new_icon)
-    } else if(article.category === '経済') {
-      title.appendChild(new_icon)
-    } else if(article.category === 'エンタメ') {
-      title.appendChild(new_icon)
-    } else if(article.category === 'スポーツ') {
-      title.appendChild(new_icon)
-    } else if(article.category === '国内') {
-      title.appendChild(new_icon)
-    } 
+      const newIcon = document.createElement('img')
+      newIcon.src = 'img/new_icon.png'
+      newIcon.classList.add('new_icon')
+
+      titleLink.appendChild(commentElement)
+      titleElement.appendChild(titleLink)
+      titleFrag.appendChild(titleElement)
+
+      const dayLag =  getDayLag(createdAt)
+      if(dayLag <= 14) {
+        addNewIcon(category, titleElement, newIcon)
+      }
+
+      if(hasComment(comment)) {
+        addCommentIcon(info, commentElement, commentIcon)
+      }
+      
+      addTitle(category, titleFrag)
+    }
   }
+}
+
+function hasComment(commentNum) {
+  if(commentNum > 0) {
+    return true
+  }
+}
+
+function addCommentIcon(info, commentElement, commentIcon) {
+  commentElement.textContent = info.comment
+  commentElement.appendChild(commentIcon)
+}
+
+function getDayLag(createdAt) {
+  // 投稿日と今日との日差を取得
+  const postDay = new Date(createdAt)
+  const ms = today.getTime() - postDay.getTime()
+  const dayLag = Math.floor(ms / (1000*60*60*24))
+  
+  return dayLag
+}
+
+function addNewIcon(category, titleElement, newIcon) {
+  if(category === 'ニュース') {
+    titleElement.appendChild(newIcon)
+  } else if(category === '経済') {
+    titleElement.appendChild(newIcon)
+  } else if(category === 'エンタメ') {
+    titleElement.appendChild(newIcon)
+  } else if(category === 'スポーツ') {
+    titleElement.appendChild(newIcon)
+  } else if(category === '国内') {
+    titleElement.appendChild(newIcon)
+  } 
+}
+
+function addTitle(category, titleFrag) {
+  if(category === 'ニュース') {
+    newsTitleWrap.appendChild(titleFrag)
+    newsContentsInner.appendChild(newsTitleWrap)
+    newsContents.appendChild(newsContentsInner)
+  } else if(category === '経済') {
+    economyTitleWrap.appendChild(titleFrag)
+    economyContentsInner.appendChild(economyTitleWrap)
+    economyContents.appendChild(economyContentsInner)
+  } else if(category === 'エンタメ') {
+    entertainmentTitleWrap.appendChild(titleFrag)
+    entertainmentContentsInner.appendChild(entertainmentTitleWrap)
+    entertainmentContents.appendChild(entertainmentContentsInner)
+  } else if(category === 'スポーツ') {
+    sportsTitleWrap.appendChild(titleFrag)
+    sportsContentsInner.appendChild(sportsTitleWrap)
+    sportsContents.appendChild(sportsContentsInner)
+  } else if(category === '国内') {
+    japanTitleWrap.appendChild(titleFrag)
+    japanContentsInner.appendChild(japanTitleWrap)
+    japanContents.appendChild(japanContentsInner)
+  } 
+}
+
+function createImages(articles) {
+  for(const article of articles) {
+    const { category, imgPath } = article
+    const imgElement = document.createElement('img')
+    imgElement.src = imgPath
+    imgElement.classList.add('img')
+    
+    addImages(category, imgElement)
+  }
+}
+
+function addImages(category, imgElement) {
+  if(category === 'ニュース') {
+    newsContentsInner.appendChild(imgElement)
+    newsContents.appendChild(newsContentsInner)
+  } else if(category === '経済') {
+    economyContentsInner.appendChild(imgElement)
+    economyContents.appendChild(economyContentsInner)
+  } else if(category === 'エンタメ') {
+    entertainmentContentsInner.appendChild(imgElement)
+    entertainmentContents.appendChild(entertainmentContentsInner)
+  } else if(category === 'スポーツ') {
+    sportsContentsInner.appendChild(imgElement)
+    sportsContents.appendChild(sportsContentsInner)
+  } else if(category === '国内') {
+    japanContentsInner.appendChild(imgElement)
+    japanContents.appendChild(japanContentsInner)
+  }
+}
+
+function addActiveClassName(target) {
+  target.classList.add('active')
 }

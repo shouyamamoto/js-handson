@@ -2,136 +2,136 @@
   "articles" : [
     { 
       "category"    : "ニュース",
-      "img_path"         : "img/news-image.png",
-      "is_init"   : true,
+      "imgPath"         : "img/news-image.png",
+      "isInit"   : true,
       "article" : [
         {
           "title"   : "ニュースのタイトル1です",
-          "created_at"    : "2021/2/31",
+          "createdAt"    : "2021/2/31",
           "comment" : "2" 
         },
         {
           "title"   : "ニュースのタイトル2です",
-          "created_at"    : "2021/2/29",
+          "createdAt"    : "2021/2/29",
           "comment" : "0" 
         },
         {
           "title"   : "ニュースのタイトル3です",
-          "created_at"    : "2021/1/24",
+          "createdAt"    : "2021/1/24",
           "comment" : "4" 
         },
         {
           "title"   : "ニュースのタイトル4です",
-          "created_at"    : "2021/1/20",
+          "createdAt"    : "2021/1/20",
           "comment" : "0" 
         }
       ]
     },
     {
       "category"    : "経済",
-      "img_path"         : "img/economy-image.png",
-      "is_init"   : false,
+      "imgPath"         : "img/economy-image.png",
+      "isInit"   : false,
       "article" : [
         {
           "title"   : "経済のタイトル1です",
-          "created_at"    : "2021/2/26",
+          "createdAt"    : "2021/2/26",
           "comment" : "0" 
         },
         {
           "title"   : "経済のタイトル2です",
-          "created_at"    : "2021/2/5",
+          "createdAt"    : "2021/2/5",
           "comment" : "4" 
         },
         {
           "title"   : "経済のタイトル3です",
-          "created_at"    : "2021/1/29",
+          "createdAt"    : "2021/1/29",
           "comment" : "3" 
         },
         {
           "category" : "経済",
           "title"   : "経済のタイトル4です",
-          "created_at"    : "2021/1/21",
+          "createdAt"    : "2021/1/21",
           "comment" : "0" 
         }
       ]
     },
     {
       "category"    : "エンタメ",
-      "img_path"         : "img/entertainment-image.png",
-      "is_init"   : false,
+      "imgPath"         : "img/entertainment-image.png",
+      "isInit"   : false,
       "article" : [
         {
           "title"   : "エンタメのタイトル1です",
-          "created_at"    : "2021/2/31",
+          "createdAt"    : "2021/2/31",
           "comment" : "2" 
         },
         {
           "title"   : "エンタメのタイトル2です",
-          "created_at"    : "2021/1/29",
+          "createdAt"    : "2021/1/29",
           "comment" : "0" 
         },
         {
           "title"   : "エンタメのタイトル3です",
-          "created_at"    : "2021/1/24",
+          "createdAt"    : "2021/1/24",
           "comment" : "4" 
         },
         {
           "title"   : "エンタメのタイトル4です",
-          "created_at"    : "2021/1/20",
+          "createdAt"    : "2021/1/20",
           "comment" : "0" 
         }
       ]
     },
     {
       "category"    : "スポーツ",
-      "img_path"         : "img/sports-image.png",
-      "is_init"   : false,
+      "imgPath"         : "img/sports-image.png",
+      "isInit"   : false,
       "article" : [
         {
           "title"   : "スポーツのタイトル1です",
-          "created_at"    : "2021/2/10",
+          "createdAt"    : "2021/2/10",
           "comment" : "1" 
         },
         {
           "title"   : "スポーツのタイトル2です",
-          "created_at"    : "2021/2/1",
+          "createdAt"    : "2021/2/1",
           "comment" : "4" 
         },
         {
           "title"   : "スポーツのタイトル3です",
-          "created_at"    : "2021/1/20",
+          "createdAt"    : "2021/1/20",
           "comment" : "0" 
         },
         {
           "title"   : "スポーツのタイトル4です",
-          "created_at"    : "2021/1/10",
+          "createdAt"    : "2021/1/10",
           "comment" : "1" 
         }
       ]
     },
     {
       "category"    : "国内",
-      "img_path"         : "img/japan-image.png",
-      "is_init"   : false,
+      "imgPath"         : "img/japan-image.png",
+      "isInit"   : false,
       "article" : [
         {
           "title"  : "国内のタイトル1です",
-          "created_at"    : "2021/2/2",
+          "createdAt"    : "2021/2/2",
           "comment" : "1" 
         },
         {
           "title"  : "国内のタイトル2です",
-          "created_at"    : "2021/2/1",
+          "createdAt"    : "2021/2/1",
           "comment" : "4" 
         },
         {
           "title"  : "国内のタイトル3です",
-          "created_at"    : "2021/1/20",
+          "createdAt"    : "2021/1/20",
           "comment" : "0" 
         },
         {
           "title"  : "国内のタイトル4です",
-          "created_at"    : "2021/1/10",
+          "createdAt"    : "2021/1/10",
           "comment" : "1" 
         }
       ]
