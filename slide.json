@@ -1,0 +1,19 @@
+{
+  "images" : [
+    {
+      "imgPath": "./img/news-image.png"
+    },
+    {
+      "imgPath": "./img/economy-image.png"
+    },
+    {
+      "imgPath": "./img/entertainment-image.png"
+    },
+    {
+      "imgPath": "./img/sports-image.png"
+    },
+    {
+      "imgPath": "./img/japan-image.png"
+    }
+  ]
+} 
