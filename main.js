@@ -51,7 +51,7 @@ for(let i = 0; i < contents.length; i++) {
   contentsInners[i].classList.add('content__inner')
   titleWraps[i].classList.add('titleWrap')
   body.appendChild(contentsWrap)
-}
+} 
 
 async function fetchArticle () {
   try {
@@ -71,7 +71,7 @@ async function createElements () {
     createTabs(articles)
     createTitles(articles)
     createImages(articles)
-    checkContentsIsActive(articles)
+    checkContentsIsInit(articles)
   } catch(e) {
     console.log(e);
   } finally {
@@ -138,7 +138,7 @@ function tabClickAction (tabList) {
   })
 }
 
-function checkContentsIsActive(articles) {
+function checkContentsIsInit(articles) {
   for(const article of articles) {
     const { category, isInit } = article
 
