@@ -1,77 +1,91 @@
 body {
-  max-width: 800px;
-  margin: 120px auto ;
-}
-ul, li {
-  padding: 0;
   margin: 0;
-  list-style: none;
+  padding: 0;
 }
 
-.tab {
-  display: flex;
-  justify-content: space-between;
+#js-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  margin: 0 auto;
+  background-color: #fafafa;
+  padding: 20px 40px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s;
 }
-.tab__item {
-  flex-basis: 20%;
+#js-form.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#js-form > p {
   text-align: center;
-  transition: all 0.3s;
-  padding: 20px;
-  background-color: #da5040;
-  color: #ffffff;
-  border-radius: 6px 6px 0 0;
+  font-size: 18px;
+  margin: 0 0 30px 0;
 }
-.tab__item:hover {
+
+#js-modal-btn {
+  margin: 20px;
   cursor: pointer;
-  opacity: 0.6;
-}
-.tab__item.active {
-  background-color: #ffffff;
-  color: #000000;
 }
 
-.content {
-  display: none;
-}
-.content.active {
+#js-submit {
+  opacity: 0;
+  height: 0;
+  pointer-events: none;
+  transition: all 0.5s;
   display: block;
+  width: 200px;
+  margin: 20px auto;
+  cursor: pointer;
 }
 
-.content__inner {
+#js-submit.active {
+  opacity: 1;
+  height: auto;
+  pointer-events: all;
+  z-index: 1;
+}
+
+.form-id,
+.form-name {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 80px 40px;
-  height: 400px;
 }
 
-.title {
-  padding: 10px;
-}
-
-.title > a {
-  text-decoration: none;
-  color: #000000;
-  transition: all .3s;
-}
-
-.title > a:hover {
-  cursor: pointer;
-  opacity: 0.6;
-}
-
-.comment {
-  margin-left: 20px;
-}
-.comment_icon {
-  margin-left: 10px;
-}
-.new_icon {
-  margin-left: 10px;
-  width: 30px;
-  vertical-align: middle;
-}
-.img {
+#js-input-num,
+#js-input-name {
+  z-index: 2;
   width: 200px;
-  height: auto;
+  height: 32px;
+  opacity: 0;
+  pointer-events: none;
+  margin-bottom: 10px;
+  transition: all 0.5s;
+}
+#js-input-num.active,
+#js-input-name {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#js-mask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  background-color: rgba(0,0,0,0.3 );
+  z-index: -1;
+  pointer-events: none;
+}
+#js-mask.active {
+  z-index: 0;
+  opacity: 1;
+  pointer-events: all;
 }

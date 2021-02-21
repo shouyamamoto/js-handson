@@ -4,21 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>もりけん先生のjsハンズオン</title>
-  <!-- <link rel="stylesheet" href="style.css"> -->
-  <link rel="stylesheet" href="slide.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="slide">
-    <div id="slideImage__container">
-    </div>
+  <ul></ul>
+  <button id="js-modal-btn">モーダルボタン</button>
 
-    <div class="arrow">
-      <span id="js-arrow__prev"></span>
-      <span id="js-arrow__next"></span>
-    </div>
-
-    <div id="js-pagination"></div>
-  </div>
-  <script src="slide.js"></script>
+  <div id="js-mask"></div>
+      <form action="#" method="POST" id="js-form">
+        <p>ログイン</p>
+        <div class="form-id">
+          <label for="js-input-num">IDを入力</label>
+          <input type="number" id="js-input-num">
+        </div>
+        
+        <div class="form-name">
+          <label for="js-input-name">名前を入力</label>
+          <input type="text" id="js-input-name">
+        </div>
+        <input type="submit" value="送信" id="js-submit">
+      </form>
+  <script src="main.js"></script>
 </body>
 </html>
