@@ -38,7 +38,7 @@ async function createImg() {
   } catch(e) {
     console.error(e);
   } finally {
-    console.log('createImg Run');
+    console.log('createImg run');
   }
   return slideImages
 }
