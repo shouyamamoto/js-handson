@@ -4,6 +4,7 @@ const nextArrow = document.getElementById('js-arrow__next')
 const prevArrow = document.getElementById('js-arrow__prev')
 const pagination = document.getElementById('js-pagination')
 const slideImages = []
+const imgFrag = document.createDocumentFragment()
 let currentNum = 0
 
 // 初期状態からprevArrowはdisabledにしておく用の関数
@@ -28,9 +29,9 @@ async function myFetch(url) {
 
 
 function fetchImages() {
-  return new Promise((reject) => {
+  return new Promise((resolve) => {
     setTimeout(function() {
-      reject(myFetch('slide.json'))
+      resolve(myFetch('slide.json'))
     }, 3000)
   })
 }
@@ -39,60 +40,68 @@ async function createImg() {
   try {
     const data = await fetchImages()
     const images = data.images
-    const imgFrag = document.createDocumentFragment()
-    images.forEach(image => {
-      const imgElement = document.createElement('img')
-      imgElement.src = image.img_path
-      imgElement.classList.add('slideImage')
-      slideImages.push(imgElement)
-      imgFrag.appendChild(imgElement)
-    })
-    slideImageContainer.appendChild(imgFrag)
+    createImgDom(images)
   } catch(e) {
     console.error(e);
   }
   return slideImages
 }
 
+function createImgDom(images) {
+  // fetchで取得してきた要素を使って、domを作る
+  images.forEach(image => {
+    const imgElement = document.createElement('img')
+    imgElement.src = image.img_path
+    imgElement.classList.add('slideImage')
+    slideImages.push(imgElement)
+    imgFrag.appendChild(imgElement)
+  })
+  // fragをulに追加
+  slideImageContainer.appendChild(imgFrag)
+}
+
 async function showSlide() {
   try {
     const slideImageList = await createImg()
-
-    pageNum(slideImageList)
-
-    // 初めのスライドの要素にactiveクラスをつける
-    slideImageList[0].classList.add('active')
-
-    // currentNumの値を確認してdisabledクラスをつける
-    checkInitCurrent()
-    
-    // arrowにactiveクラスをつける 
-    nextArrow.classList.add('active')
-    prevArrow.classList.add('active')
-
-    // クリックイベント
-    nextArrow.addEventListener('click', () => {
-      changeImage(1, slideImageList);
-      prevArrow.classList.remove('disabled')
-      
-      if(isLast(currentNum, slideImageList)) {
-        nextArrow.classList.add('disabled')
-      }
-    })
-    
-    prevArrow.addEventListener('click', () => {
-      changeImage(-1, slideImageList);
-      nextArrow.classList.remove('disabled')
-
-      if(isFirst(currentNum)) {
-        prevArrow.classList.add('disabled')
-      }
-    })
+    createSlide(slideImageList)
   } catch(e) {
     console.error(e);
-  }  
+  }
 }
 showSlide()
+
+function createSlide(slideImageList) {
+  // 初めのスライドの要素にactiveクラスをつける
+  slideImageList[0].classList.add('active')
+
+  // currentNumの値を確認してdisabledクラスをつける
+  checkInitCurrent()
+  
+  // arrowにactiveクラスをつける 
+  nextArrow.classList.add('active')
+  prevArrow.classList.add('active')
+
+  // クリックイベント
+  nextArrow.addEventListener('click', () => {
+    changeImage(1, slideImageList);
+    prevArrow.classList.remove('disabled')
+    
+    if(isLast(currentNum, slideImageList)) {
+      nextArrow.classList.add('disabled')
+    }
+  })
+  
+  prevArrow.addEventListener('click', () => {
+    changeImage(-1, slideImageList);
+    nextArrow.classList.remove('disabled')
+
+    if(isFirst(currentNum)) {
+      prevArrow.classList.add('disabled')
+    }
+  })
+
+  pageNum(slideImageList)
+}
 
 
 // 現在のスライドの枚数
