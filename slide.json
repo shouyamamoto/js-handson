@@ -1,19 +1,19 @@
 {
   "images" : [
     {
-      "img_path": "./img/news-image.png"
+      "imgPath": "./img/news-image.png"
     },
     {
-      "img_path": "./img/economy-image.png"
+      "imgPath": "./img/economy-image.png"
     },
     {
-      "img_path": "./img/entertainment-image.png"
+      "imgPath": "./img/entertainment-image.png"
     },
     {
-      "img_path": "./img/sports-image.png"
+      "imgPath": "./img/sports-image.png"
     },
     {
-      "img_path": "./img/japan-image.png"
+      "imgPath": "./img/japan-image.png"
     }
   ]
 } 

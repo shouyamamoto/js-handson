@@ -1,3 +1,5 @@
+const fetchURL = 'https://jsondata.okiba.me/v1/json/LnclJ210221073037'
+
 const slideImageContainer = document.getElementById('slideImage__container')
 const slideImageFrag = document.createDocumentFragment()
 const nextArrow = document.getElementById('js-arrow__next')
@@ -7,17 +9,10 @@ const slideImages = []
 const imgFrag = document.createDocumentFragment()
 let currentNum = 0
 
-// 初期状態からprevArrowはdisabledにしておく用の関数
-function checkInitCurrent() {
-  if(currentNum === 0) {
-    prevArrow.classList.add('disabled')
-  }
-}
-
 // fetchでjsonデータを取得してくる用の関数
-async function myFetch(url) {
+async function myFetch(fetchURL) {
   try {
-    const response = await fetch(url)
+    const response = await fetch(fetchURL)
     const json = await response.json()
     return json
   } catch {
@@ -27,11 +22,10 @@ async function myFetch(url) {
   }
 }
 
-
 function fetchImages() {
   return new Promise((resolve) => {
     setTimeout(function() {
-      resolve(myFetch('slide.json'))
+      resolve(myFetch(fetchURL))
     }, 3000)
   })
 }
@@ -43,21 +37,10 @@ async function createImg() {
     createImgDom(images)
   } catch(e) {
     console.error(e);
+  } finally {
+    console.log('createImg run');
   }
   return slideImages
-}
-
-function createImgDom(images) {
-  // fetchで取得してきた要素を使って、domを作る
-  images.forEach(image => {
-    const imgElement = document.createElement('img')
-    imgElement.src = image.img_path
-    imgElement.classList.add('slideImage')
-    slideImages.push(imgElement)
-    imgFrag.appendChild(imgElement)
-  })
-  // fragをulに追加
-  slideImageContainer.appendChild(imgFrag)
 }
 
 async function showSlide() {
@@ -66,22 +49,50 @@ async function showSlide() {
     createSlide(slideImageList)
   } catch(e) {
     console.error(e);
+  } finally {
+    console.log('showSlide run');
   }
 }
 showSlide()
 
+function createImgDom(images) {
+  // fetchで取得してきた要素を使って、domを作る
+  images.forEach(image => {
+    const imgElement = document.createElement('img')
+    imgElement.src = image.imgPath
+    imgElement.classList.add('slideImage')
+    slideImages.push(imgElement)
+    imgFrag.appendChild(imgElement)
+  })
+  // fragをulに追加
+  slideImageContainer.appendChild(imgFrag)
+}
+
 function createSlide(slideImageList) {
-  // 初めのスライドの要素にactiveクラスをつける
   slideImageList[0].classList.add('active')
 
-  // currentNumの値を確認してdisabledクラスをつける
-  checkInitCurrent()
-  
-  // arrowにactiveクラスをつける 
+  if(isCurrentNum(currentNum)) {
+    addClassNameDisabled(prevArrow)
+  }
+  addClassNameActive(prevArrow, nextArrow)
+  clickArrow(prevArrow, nextArrow, slideImageList)
+  pageNum(slideImageList)
+}
+
+function isCurrentNum(currentNum) {
+  if(currentNum === 0) return true
+}
+
+function addClassNameDisabled(target) {
+  target.classList.add('disabled')
+}
+
+function addClassNameActive(prevArrow, nextArrow) {
   nextArrow.classList.add('active')
   prevArrow.classList.add('active')
+}
 
-  // クリックイベント
+function clickArrow(prevArrow, nextArrow, slideImageList) {
   nextArrow.addEventListener('click', () => {
     changeImage(1, slideImageList);
     prevArrow.classList.remove('disabled')
@@ -99,10 +110,7 @@ function createSlide(slideImageList) {
       prevArrow.classList.add('disabled')
     }
   })
-
-  pageNum(slideImageList)
 }
-
 
 // 現在のスライドの枚数
 function pageNum(target) {
