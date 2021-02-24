@@ -66,19 +66,19 @@ async function fetchArticle (url) {
 }
 
 async function init (url) {
-  let res
+  let articles
   try {
-    res = await fetchArticle(url)
+    articles = await fetchArticle(url)
   } catch(e) {
     console.log(e);
   } finally {
     console.log('init run');
   }
 
-  createTabs(res)
-  createTitles(res)
-  createImages(res)
-  checkContentsIsInit(res)
+  createTabs(articles)
+  createTitles(articles)
+  createImages(articles)
+  checkContentsIsInit(articles)
 }
 init(fetchURL)
 
