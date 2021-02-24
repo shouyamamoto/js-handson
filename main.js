@@ -53,9 +53,9 @@ for(let i = 0; i < contents.length; i++) {
   body.appendChild(contentsWrap)
 } 
 
-async function fetchArticle () {
+async function fetchArticle (url) {
   try {
-    const response = await fetch(fetchURL)
+    const response = await fetch(url)
     const json = await response.json()
     return json.articles
   } catch {
@@ -65,20 +65,22 @@ async function fetchArticle () {
   }
 }
 
-async function createElements () {
+async function init (url) {
+  let res
   try {
-    const articles = await fetchArticle()
-    createTabs(articles)
-    createTitles(articles)
-    createImages(articles)
-    checkContentsIsInit(articles)
+    res = await fetchArticle(url)
   } catch(e) {
     console.log(e);
   } finally {
-    console.log('createElements run');
+    console.log('init run');
   }
+
+  createTabs(res)
+  createTitles(res)
+  createImages(res)
+  checkContentsIsInit(res)
 }
-createElements()
+init(fetchURL)
 
 function createTabs(articles) {
   const tabFrag = document.createDocumentFragment()
