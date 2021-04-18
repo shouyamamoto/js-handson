@@ -6,10 +6,11 @@ const dayDate = new Date()
 const year = dayDate.getFullYear()
 const month = dayDate.getMonth() + 1
 const day = dayDate.getDate()
-const today =  new Date(`${year}/${month}/${day}`);
+const today = new Date(`${year}/${month}/${day}`);
 
 const body = document.querySelector('body')
 const tabs = document.querySelector('ul')
+
 
 
 // 各コンテンツの枠
@@ -45,15 +46,15 @@ entertainmentContents.id = "js-entertainment"
 sportsContents.id = "js-sports"
 japanContents.id = "js-japan"
 
-for(let i = 0; i < contents.length; i++) {
+for (let i = 0; i < contents.length; i++) {
   contentsWrap.appendChild(contents[i])
   contents[i].classList.add('content')
   contentsInners[i].classList.add('content__inner')
   titleWraps[i].classList.add('titleWrap')
   body.appendChild(contentsWrap)
-} 
+}
 
-async function fetchArticle () {
+async function fetchArticle() {
   try {
     const response = await fetch(fetchURL)
     const json = await response.json()
@@ -65,14 +66,14 @@ async function fetchArticle () {
   }
 }
 
-async function createElements () {
+async function createElements() {
   try {
     const articles = await fetchArticle()
     createTabs(articles)
     createTitles(articles)
     createImages(articles)
     checkContentsIsInit(articles)
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   } finally {
     console.log('createElements run');
@@ -84,7 +85,7 @@ function createTabs(articles) {
   const tabFrag = document.createDocumentFragment()
   const tabList = new Set()
 
-  for(const article of articles) {
+  for (const article of articles) {
     const { category, isInit } = article
     const tabItem = document.createElement('li')
     tabItem.textContent = category
@@ -93,7 +94,7 @@ function createTabs(articles) {
     tabs.appendChild(tabFrag)
     tabList.add(tabItem)
 
-    if(checkTabIsActive(isInit)) {
+    if (checkTabIsActive(isInit)) {
       addActiveClassName(tabItem)
     }
 
@@ -103,24 +104,24 @@ function createTabs(articles) {
 }
 
 function checkTabIsActive(isInit) {
-  if(isInit) return true
+  if (isInit) return true
 }
 
 function addTabId(category, tabItem) {
-  if(category === 'ニュース') {
+  if (category === 'ニュース') {
     tabItem.dataset.id = 'js-news'
-  } else if(category === '経済') {
+  } else if (category === '経済') {
     tabItem.dataset.id = 'js-economy'
-  } else if(category === 'エンタメ') {
+  } else if (category === 'エンタメ') {
     tabItem.dataset.id = 'js-entertainment'
-  } else if(category === 'スポーツ') {
+  } else if (category === 'スポーツ') {
     tabItem.dataset.id = 'js-sports'
-  } else if(category === '国内') {
+  } else if (category === '国内') {
     tabItem.dataset.id = 'js-japan'
   }
 }
 
-function tabClickAction (tabList) {
+function tabClickAction(tabList) {
   tabList.forEach(clickedTab => {
     clickedTab.addEventListener('click', () => {
       tabList.forEach(tab => {
@@ -139,18 +140,18 @@ function tabClickAction (tabList) {
 }
 
 function checkContentsIsInit(articles) {
-  for(const article of articles) {
+  for (const article of articles) {
     const { category, isInit } = article
 
-    if(category === 'ニュース' && isInit) {
+    if (category === 'ニュース' && isInit) {
       addActiveClassName(newsContents)
-    } else if(category === '経済' && isInit) {
+    } else if (category === '経済' && isInit) {
       addActiveClassName(economyContents)
-    } else if(category === 'エンタメ' && isInit) {
+    } else if (category === 'エンタメ' && isInit) {
       addActiveClassName(entertainmentContents)
-    } else if(category === 'スポーツ' && isInit) {
+    } else if (category === 'スポーツ' && isInit) {
       addActiveClassName(sportsContents)
-    } else if(category === '国内' && isInit) {
+    } else if (category === '国内' && isInit) {
       addActiveClassName(japanContents)
     }
   }
@@ -158,11 +159,11 @@ function checkContentsIsInit(articles) {
 
 function createTitles(articles) {
   const titleFrag = document.createDocumentFragment()
-  
-  for(const article of articles) {
+
+  for (const article of articles) {
     const { category } = article
-    
-    for(const info of article.article) {
+
+    for (const info of article.article) {
       const { title, comment, createdAt } = info
       const titleElement = document.createElement('li')
       const titleLink = document.createElement('a')
@@ -183,22 +184,22 @@ function createTitles(articles) {
       titleElement.appendChild(titleLink)
       titleFrag.appendChild(titleElement)
 
-      const dayLag =  getDayLag(createdAt)
-      if(dayLag <= 14) {
+      const dayLag = getDayLag(createdAt)
+      if (dayLag <= 14) {
         addNewIcon(category, titleElement, newIcon)
       }
 
-      if(hasComment(comment)) {
+      if (hasComment(comment)) {
         addCommentIcon(info, commentElement, commentIcon)
       }
-      
+
       addTitle(category, titleFrag)
     }
   }
 }
 
 function hasComment(commentNum) {
-  if(commentNum > 0) {
+  if (commentNum > 0) {
     return true
   }
 }
@@ -212,74 +213,74 @@ function getDayLag(createdAt) {
   // 投稿日と今日との日差を取得
   const postDay = new Date(createdAt)
   const ms = today.getTime() - postDay.getTime()
-  const dayLag = Math.floor(ms / (1000*60*60*24))
-  
+  const dayLag = Math.floor(ms / (1000 * 60 * 60 * 24))
+
   return dayLag
 }
 
 function addNewIcon(category, titleElement, newIcon) {
-  if(category === 'ニュース') {
+  if (category === 'ニュース') {
     titleElement.appendChild(newIcon)
-  } else if(category === '経済') {
+  } else if (category === '経済') {
     titleElement.appendChild(newIcon)
-  } else if(category === 'エンタメ') {
+  } else if (category === 'エンタメ') {
     titleElement.appendChild(newIcon)
-  } else if(category === 'スポーツ') {
+  } else if (category === 'スポーツ') {
     titleElement.appendChild(newIcon)
-  } else if(category === '国内') {
+  } else if (category === '国内') {
     titleElement.appendChild(newIcon)
-  } 
+  }
 }
 
 function addTitle(category, titleFrag) {
-  if(category === 'ニュース') {
+  if (category === 'ニュース') {
     newsTitleWrap.appendChild(titleFrag)
     newsContentsInner.appendChild(newsTitleWrap)
     newsContents.appendChild(newsContentsInner)
-  } else if(category === '経済') {
+  } else if (category === '経済') {
     economyTitleWrap.appendChild(titleFrag)
     economyContentsInner.appendChild(economyTitleWrap)
     economyContents.appendChild(economyContentsInner)
-  } else if(category === 'エンタメ') {
+  } else if (category === 'エンタメ') {
     entertainmentTitleWrap.appendChild(titleFrag)
     entertainmentContentsInner.appendChild(entertainmentTitleWrap)
     entertainmentContents.appendChild(entertainmentContentsInner)
-  } else if(category === 'スポーツ') {
+  } else if (category === 'スポーツ') {
     sportsTitleWrap.appendChild(titleFrag)
     sportsContentsInner.appendChild(sportsTitleWrap)
     sportsContents.appendChild(sportsContentsInner)
-  } else if(category === '国内') {
+  } else if (category === '国内') {
     japanTitleWrap.appendChild(titleFrag)
     japanContentsInner.appendChild(japanTitleWrap)
     japanContents.appendChild(japanContentsInner)
-  } 
+  }
 }
 
 function createImages(articles) {
-  for(const article of articles) {
+  for (const article of articles) {
     const { category, imgPath } = article
     const imgElement = document.createElement('img')
     imgElement.src = imgPath
     imgElement.classList.add('img')
-    
+
     addImages(category, imgElement)
   }
 }
 
 function addImages(category, imgElement) {
-  if(category === 'ニュース') {
+  if (category === 'ニュース') {
     newsContentsInner.appendChild(imgElement)
     newsContents.appendChild(newsContentsInner)
-  } else if(category === '経済') {
+  } else if (category === '経済') {
     economyContentsInner.appendChild(imgElement)
     economyContents.appendChild(economyContentsInner)
-  } else if(category === 'エンタメ') {
+  } else if (category === 'エンタメ') {
     entertainmentContentsInner.appendChild(imgElement)
     entertainmentContents.appendChild(entertainmentContentsInner)
-  } else if(category === 'スポーツ') {
+  } else if (category === 'スポーツ') {
     sportsContentsInner.appendChild(imgElement)
     sportsContents.appendChild(sportsContentsInner)
-  } else if(category === '国内') {
+  } else if (category === '国内') {
     japanContentsInner.appendChild(imgElement)
     japanContents.appendChild(japanContentsInner)
   }
